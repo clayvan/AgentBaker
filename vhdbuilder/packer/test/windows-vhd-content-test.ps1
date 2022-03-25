@@ -165,8 +165,25 @@ function Test-RegistryAdded {
     }
 }
 
+function Test-PackagesPlugins {
+    $expectedPlugins = @(
+        "Microsoft.Azure.Security.AntimalwareSignature.AntimalwareConfiguration"
+        "Microsoft.CPlat.Core.RunCommandWindows"
+    )
+    $actualPlugins = (Get-ChildItem "C:\Packages\Plugins").Name
+    $compareResult = (Compare-Object $expectedPlugins $actualPlugins)
+    if ($compareResult) {
+        Write-Error "Packages Plugins are not expected. Details:"
+        Write-OutPut $compareResult
+        exit 1
+    } else {
+        Write-Output "Packages Plugins are expected"
+    }
+}
+
 Test-FilesToCacheOnVHD
 Test-PatchInstalled
 Test-ImagesPulled
 Test-RegistryAdded
+Test-PackagesPlugins
 Remove-Item -Path c:\windows-vhd-configuration.ps1
