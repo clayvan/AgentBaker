@@ -56,6 +56,7 @@ init-packer:
 
 az-login:
 	az login --service-principal -u ${CLIENT_ID} -p ${CLIENT_SECRET} --tenant ${TENANT_ID}
+	az version
 	az account set -s ${SUBSCRIPTION_ID}
 
 run-packer: az-login
